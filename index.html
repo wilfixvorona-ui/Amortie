@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amortie — Tennis Academy</title>
+  <meta name="description" content="Amortie is a tennis academy in Kyiv for players of every age — technique, footwork and the art of the perfect drop shot.">
+  <meta name="theme-color" content="#0F0F0F">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@300,400,500,600,700,800&display=swap">
+  <!-- Switzer has no Cyrillic: Onest picks up Ukrainian glyphs with a matching grotesque feel -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300..800&display=swap">
+  <link rel="preload" as="image" href="assets/img/hero.jpg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ SVG SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-ball" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18.2" fill="none" stroke="currentColor" stroke-width="3.2"/><path d="M12.6 4.6C10.4 15.6 27.6 19.6 25.6 35.8" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ PRELOADER — the drop shot ============ -->
+<div class="loader" aria-hidden="true">
+  <div class="loader__half loader__half--top">
+    <div class="ld">
+      <div class="ld__head"><span>Amortie Tennis Academy</span><span>Set 1 · Game 1</span></div>
+      <div class="ld__logo">
+        <span class="ld__w ld__w--l"><span class="ld__c">A</span><span class="ld__c">M</span></span>
+        <span class="ld__slot"><svg class="ld__o"><use href="#i-ball"/></svg></span>
+        <span class="ld__w ld__w--r"><span class="ld__c">R</span><span class="ld__c">T</span><span class="ld__c">I</span><span class="ld__c">E</span></span>
+      </div>
+      <div class="ld__floor"></div>
+      <div class="ld__shadow"></div>
+      <div class="ld__ball"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19.5" fill="#D3FD40"/><path d="M12.6 3.6C10.4 15.6 27.6 19.6 25.6 36.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+      <div class="ld__foot"><span>Kyiv — Est. 2014</span><span class="ld__pct">00</span><span>Touch over power</span></div>
+    </div>
+  </div>
+  <div class="loader__half loader__half--bot"></div>
+  <div class="ld__split"></div>
+</div>
+
+<!-- ============ CURSOR ============ -->
+<div class="cursor" aria-hidden="true">
+  <div class="cursor__shadow"></div>
+  <div class="cursor__ball">
+    <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#D3FD40"/><path class="cursor__seam" d="M12.6 3.6C10.4 15.6 27.6 19.6 25.6 36.4" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <span class="cursor__label"></span>
+  </div>
+</div>
+
+<!-- ============ COURT LINES (global background) ============ -->
+<svg class="court" viewBox="0 0 1097 2377" preserveAspectRatio="none" aria-hidden="true">
+  <g class="court__lines">
+    <path d="M10 10H1087V2367H10Z"/>
+    <path d="M147 10V2367"/>
+    <path d="M950 10V2367"/>
+    <path d="M147 548H950"/>
+    <path d="M147 1829H950"/>
+    <path d="M548.5 548V1829"/>
+    <path class="court__net" d="M-40 1188.5H1137"/>
+    <path d="M548.5 10V40M548.5 2367V2337"/>
+  </g>
+</svg>
+<div class="court-ball" aria-hidden="true"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="header">
+  <div class="container header__in">
+    <a href="#top" class="logo" aria-label="Amortie — home">
+      <span>AM</span><svg class="logo__ball"><use href="#i-ball"/></svg><span>RTIE</span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <span class="nav__hl"></span>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#programs" data-i18n="nav.programs">Programs</a>
+      <a href="#coaches" data-i18n="nav.coaches">Coaches</a>
+      <a href="#facilities" data-i18n="nav.facilities">Facilities</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    </nav>
+
+    <div class="header__right">
+      <div class="lang" role="group" aria-label="Language">
+        <span class="lang__pill"></span>
+        <button class="lang__btn is-active" data-lang="en" type="button">EN</button>
+        <button class="lang__btn" data-lang="uk" type="button">UA</button>
+      </div>
+      <a href="#join" class="btn btn--white header__cta" data-magnetic><span data-i18n="nav.cta">Let’s Talk</span></a>
+      <button class="burger" type="button" aria-label="Menu" aria-expanded="false"><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" aria-hidden="true">
+  <nav class="menu__nav">
+    <a href="#about"><small>02</small><span data-i18n="nav.about">About</span></a>
+    <a href="#programs"><small>03</small><span data-i18n="nav.programs">Programs</span></a>
+    <a href="#plans"><small>04</small><span data-i18n="plans.tag">Membership</span></a>
+    <a href="#coaches"><small>07</small><span data-i18n="nav.coaches">Coaches</span></a>
+    <a href="#facilities"><small>08</small><span data-i18n="nav.facilities">Facilities</span></a>
+    <a href="#faq"><small>10</small><span data-i18n="nav.faq">FAQ</span></a>
+    <a href="#join"><small>11</small><span data-i18n="nav.cta">Let’s Talk</span></a>
+  </nav>
+  <div class="menu__foot"><span>hello@amortie.club</span><span>+380 44 123 45 67</span></div>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="hero__media">
+      <img src="assets/img/hero.jpg" alt="Tennis player serving on a blue hard court" class="hero__img">
+      <div class="hero__shade"></div>
+    </div>
+    <svg class="hero__lines" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d="M-20 640 L1460 300"/>
+      <path d="M380 920 L980 -20"/>
+      <path d="M-20 780 L1460 440"/>
+    </svg>
+
+    <div class="container hero__in">
+      <div class="hero__mbadge">
+        <div class="avatars avatars--xs"><img src="assets/img/av-1.jpg" alt=""><img src="assets/img/av-2.jpg" alt=""><img src="assets/img/av-3.jpg" alt=""></div>
+        <div><b>1,200+</b><span data-i18n="hero.card">Active players</span></div>
+      </div>
+      <div class="hero__top">
+        <div class="hero__quote">
+          <div class="avatars">
+            <img src="assets/img/av-1.jpg" alt=""><img src="assets/img/av-2.jpg" alt=""><img src="assets/img/av-3.jpg" alt="">
+          </div>
+          <p data-i18n="hero.quote">The softest shot on court wins the loudest points.</p>
+        </div>
+        <div class="hero__side">
+          <p data-i18n="hero.lead">A tennis academy in Kyiv where players of every age master technique, footwork and the art of the perfect drop shot.</p>
+          <div class="hero__actions">
+            <a href="#join" class="btn btn--lime" data-magnetic><span data-i18n="hero.cta">Book a Trial</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+            <a href="#programs" class="btn btn--glass hero__m-only"><span data-i18n="nav.programs">Programs</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__bottom">
+        <h1 class="hero__title" data-split data-i18n="hero.title">Master the Touch. Own the Court.</h1>
+        <div class="hero__card">
+          <div class="hero__card-txt">
+            <strong><span class="count" data-to="1200">0</span>+</strong>
+            <span data-i18n="hero.card">Active players</span>
+            <div class="avatars avatars--sm"><img src="assets/img/av-4.jpg" alt=""><img src="assets/img/av-1.jpg" alt=""><img src="assets/img/av-3.jpg" alt=""></div>
+          </div>
+          <div class="hero__card-img"><img src="assets/img/hero-card.jpg" alt="Player serving, seen from above"></div>
+        </div>
+      </div>
+
+      <div class="hero__mstats">
+        <div><b>12</b><span data-i18n="stats.1">Years on court</span></div>
+        <div><b>14</b><span data-i18n="hero.m.courts">Courts</span></div>
+        <div><b>38</b><span data-i18n="hero.m.titles">Junior titles</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="tapes" aria-hidden="true">
+    <div class="tape tape--lime"><div class="tape__track">
+      <span data-i18n="tape.p1">Train smart</span><svg><use href="#i-ball"/></svg><span data-i18n="tape.p2">Play brave</span><svg><use href="#i-ball"/></svg><span data-i18n="tape.p3">Win with touch</span><svg><use href="#i-ball"/></svg><span data-i18n="tape.p4">Every point matters</span><svg><use href="#i-ball"/></svg><span data-i18n="tape.p5">First serve to final set</span><svg><use href="#i-ball"/></svg>
+    </div></div>
+    <div class="tape tape--ink"><div class="tape__track">
+      <span>Amortie</span><b>/</b><span data-i18n="tape.kyiv">Kyiv</span><b>/</b><span data-i18n="tape.since">Since 2014</span><b>/</b><span data-i18n="tape.touch">Touch over power</span><b>/</b><span>Amortie</span><b>/</b><span data-i18n="tape.gsm">Game · Set · Match</span><b>/</b>
+    </div></div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="panel about">
+        <div class="sec-head"><span data-i18n="about.tag">About</span><span>02//</span></div>
+        <div class="about__grid">
+          <div class="about__txt">
+            <h2 class="h2" data-split data-i18n="about.title">Our academy is built for players who want more than just practice.</h2>
+            <p class="muted" data-i18n="about.text">Amortie — French for “drop shot”. The shot that wins with intelligence, not force. That’s how we coach: precise, patient and always one step ahead.</p>
+            <a href="#join" class="btn btn--lime" data-magnetic><span data-i18n="about.cta">Get in Touch</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+          </div>
+
+          <figure class="about__feature ph" data-cursor="view">
+            <img src="assets/img/about-1.jpg" alt="Player in black outfit ready to return" data-parallax>
+            <span class="chip chip--glass" data-i18n="about.chip">Indoor Arena</span>
+            <figcaption>
+              <span data-i18n="about.feature">Eight tour-grade hard courts, lit for year-round play.</span>
+              <i class="round-ic"><svg><use href="#i-arrow-ur"/></svg></i>
+            </figcaption>
+          </figure>
+
+          <div class="about__slider">
+            <div class="mini-slider">
+              <img src="assets/img/about-2.jpg" alt="Coach feeding balls during a group session" class="is-active">
+              <img src="assets/img/about-4.jpg" alt="Player preparing a forehand on a hard court">
+              <img src="assets/img/prog-kids.jpg" alt="Racket and balls on a clay court">
+            </div>
+            <div class="about__slider-foot">
+              <p class="muted" data-i18n="about.slider">Find your go-to <em>place to play</em>, train and elevate your game.</p>
+              <div class="arrows">
+                <button class="arrow" data-mini="-1" aria-label="Previous"><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg></button>
+                <button class="arrow" data-mini="1" aria-label="Next"><svg><use href="#i-arrow"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAMS ============ -->
+  <section class="section" id="programs">
+    <div class="container">
+      <div class="big-head">
+        <h2 class="big" data-chars data-i18n="programs.big">Programs</h2>
+        <span class="big-head__num">03//</span>
+      </div>
+
+      <div class="programs">
+        <div class="prog-card" data-cursor="drag">
+          <div class="prog-card__media">
+            <img src="assets/img/about-3.jpg" alt="" class="is-active">
+            <img src="assets/img/prog-adult.jpg" alt="">
+            <img src="assets/img/prog-junior.jpg" alt="">
+            <img src="assets/img/prog-pro.jpg" alt="">
+          </div>
+          <div class="prog-card__body">
+            <div class="prog-card__txt">
+              <h3 class="prog-card__title" data-i18n="prog.0.t">Kids &amp; first-time players</h3>
+              <p class="prog-card__desc" data-i18n="prog.0.d">Fundamentals through games, coordination drills and a lot of fun on mini courts. Ages 4–10.</p>
+            </div>
+            <a href="#join" class="btn btn--ghost-w"><span data-i18n="programs.details">See Details</span><svg class="btn__arr"><use href="#i-arrow-ur"/></svg></a>
+            <div class="prog-card__foot">
+              <span class="prog-card__count"><b>1</b>/4</span>
+              <div class="arrows arrows--dark">
+                <button class="arrow" data-prog="-1" aria-label="Previous"><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg></button>
+                <button class="arrow" data-prog="1" aria-label="Next"><svg><use href="#i-arrow"/></svg></button>
+              </div>
+            </div>
+          </div>
+          <svg class="prog-card__deco"><use href="#i-ball"/></svg>
+        </div>
+
+        <div class="programs__info">
+          <h3 class="h3" data-split data-i18n="programs.title">Programs built for every stage of your tennis journey</h3>
+          <p class="muted" data-i18n="programs.text">From the first swing to competitive excellence, our structured programs help players grow with confidence, skill and discipline.</p>
+          <div class="programs__row">
+            <div class="levels">
+              <button class="level is-active" data-level="0"><i></i><span data-i18n="lvl.beg">Beginner</span></button>
+              <button class="level" data-level="1"><i></i><span data-i18n="lvl.int">Intermediate</span></button>
+              <button class="level" data-level="3"><i></i><span data-i18n="lvl.adv">Advanced</span></button>
+            </div>
+            <a href="#plans" class="video-thumb" data-cursor="view">
+              <img src="assets/img/prog-video.jpg" alt="Player tossing the ball for a serve">
+              <span class="video-thumb__play"><svg><use href="#i-play"/></svg></span>
+              <span class="video-thumb__lbl" data-i18n="programs.video">See membership</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MEMBERSHIP ============ -->
+  <section class="plans glow" id="plans">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container">
+      <div class="sec-head sec-head--dark"><span data-i18n="plans.tag">Membership</span><span>04//</span></div>
+      <div class="plans__head">
+        <h2 class="plans__title" data-split data-i18n="plans.title">Pick your pace. We’ll handle the rest.</h2>
+        <div class="period" role="group" aria-label="Billing period">
+          <span class="period__pill"></span>
+          <button class="period__btn is-active" type="button" data-period="month" data-i18n="plans.month">Monthly</button>
+          <button class="period__btn" type="button" data-period="season"><span data-i18n="plans.season">Season</span> <b>−15%</b></button>
+        </div>
+      </div>
+      <div class="plans__grid">
+          <article class="plan" data-spot>
+            
+            <div class="plan__top"><h3 class="plan__name" data-i18n="plans.starter.n"></h3></div>
+            <p class="plan__for" data-i18n="plans.starter.d"></p>
+            <div class="plan__price"><span class="plan__cur">₴</span><span class="plan__num" data-plan="starter">0</span><span class="plan__per" data-i18n="plans.per">/ month</span></div>
+            <p class="plan__note" data-note="starter"></p>
+            <ul class="plan__list">
+              <li data-i18n="plans.starter.1"></li>
+              <li data-i18n="plans.starter.2"></li>
+              <li data-i18n="plans.starter.3"></li>
+              <li data-i18n="plans.starter.4"></li>
+            </ul>
+            <a href="#join" class="btn btn--outline-w"><span data-i18n="plans.cta">Start with a free trial</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+          </article>
+          <article class="plan plan--hot" data-spot>
+            <svg class="plan__deco"><use href="#i-ball"/></svg>
+            <div class="plan__top"><h3 class="plan__name" data-i18n="plans.academy.n"></h3><span class="plan__tag" data-i18n="plans.hot">Most popular</span></div>
+            <p class="plan__for" data-i18n="plans.academy.d"></p>
+            <div class="plan__price"><span class="plan__cur">₴</span><span class="plan__num" data-plan="academy">0</span><span class="plan__per" data-i18n="plans.per">/ month</span></div>
+            <p class="plan__note" data-note="academy"></p>
+            <ul class="plan__list">
+              <li data-i18n="plans.academy.1"></li>
+              <li data-i18n="plans.academy.2"></li>
+              <li data-i18n="plans.academy.3"></li>
+              <li data-i18n="plans.academy.4"></li>
+              <li data-i18n="plans.academy.5"></li>
+            </ul>
+            <a href="#join" class="btn btn--ink"><span data-i18n="plans.cta">Start with a free trial</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+          </article>
+          <article class="plan" data-spot>
+            
+            <div class="plan__top"><h3 class="plan__name" data-i18n="plans.pro.n"></h3></div>
+            <p class="plan__for" data-i18n="plans.pro.d"></p>
+            <div class="plan__price"><span class="plan__cur">₴</span><span class="plan__num" data-plan="pro">0</span><span class="plan__per" data-i18n="plans.per">/ month</span></div>
+            <p class="plan__note" data-note="pro"></p>
+            <ul class="plan__list">
+              <li data-i18n="plans.pro.1"></li>
+              <li data-i18n="plans.pro.2"></li>
+              <li data-i18n="plans.pro.3"></li>
+              <li data-i18n="plans.pro.4"></li>
+              <li data-i18n="plans.pro.5"></li>
+            </ul>
+            <a href="#join" class="btn btn--outline-w"><span data-i18n="plans.cta">Start with a free trial</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+          </article>
+      </div>
+      <div class="plans__foot">
+        <span data-i18n="plans.foot1">Every plan starts with a free 60-minute trial and a video assessment.</span>
+        <span data-i18n="plans.foot2">Prices in UAH · Season = 6 months</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="panel">
+        <div class="sec-head"><span data-i18n="how.tag">How it works</span><span>05//</span></div>
+        <div class="steps">
+          <article class="step">
+            <div class="step__img ph"><img src="assets/img/step-1.jpg" alt="" data-parallax></div>
+            <span class="chip" data-i18n="how.s">Step</span><b class="step__n">1</b>
+            <h3 data-i18n="how.1.t">Book a free trial</h3>
+            <p class="muted" data-i18n="how.1.d">Pick a time that suits you. The first 60 minutes on court are on us.</p>
+          </article>
+          <article class="step">
+            <div class="step__img ph"><img src="assets/img/step-2.jpg" alt="" data-parallax></div>
+            <span class="chip" data-i18n="how.s">Step</span><b class="step__n">2</b>
+            <h3 data-i18n="how.2.t">Get assessed</h3>
+            <p class="muted" data-i18n="how.2.d">A coach maps your strokes, movement and goals with video analysis.</p>
+          </article>
+          <article class="step">
+            <div class="step__img ph"><img src="assets/img/step-3.jpg" alt="" data-parallax></div>
+            <span class="chip" data-i18n="how.s">Step</span><b class="step__n">3</b>
+            <h3 data-i18n="how.3.t">Start your plan</h3>
+            <p class="muted" data-i18n="how.3.d">Join the right group or go private — progress is tracked every month.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHOOSE US ============ -->
+  <section class="section" id="why">
+    <div class="container">
+      <div class="big-head">
+        <h2 class="big" data-chars data-i18n="why.big">Choose Us</h2>
+        <span class="big-head__num">06//</span>
+      </div>
+      <div class="why">
+        <article class="why__card" data-spot>
+          <svg class="why__ic" viewBox="0 0 48 48"><ellipse cx="19" cy="17" rx="12" ry="14" transform="rotate(-35 19 17)"/><path d="M27 27l13 13M24 30l6 6M12 8l14 18M7 15l19 6M14 5l3 23"/><circle cx="38" cy="10" r="5"/></svg>
+          <h3 data-i18n="why.1.t">Expert coaching team</h3>
+          <p class="muted" data-i18n="why.1.d">Certified coaches with national and international backgrounds deliver tour-level instruction.</p>
+          <span class="why__n">01</span>
+        </article>
+        <article class="why__card" data-spot>
+          <svg class="why__ic" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="11"/><circle cx="24" cy="24" r="4"/><path d="M24 24 40 8M34 8h6v6"/></svg>
+          <h3 data-i18n="why.2.t">Personalised plans</h3>
+          <p class="muted" data-i18n="why.2.d">Training tailored to your goals, schedule and fitness level — so you progress safely and fast.</p>
+          <span class="why__n">02</span>
+        </article>
+        <article class="why__card" data-spot>
+          <svg class="why__ic" viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="36" rx="2"/><path d="M12 6v36M36 6v36M12 16h24M12 32h24M24 16v16M6 24h36"/></svg>
+          <h3 data-i18n="why.3.t">World-class facilities</h3>
+          <p class="muted" data-i18n="why.3.d">Hard and clay courts, a performance gym and a recovery studio — all under one roof.</p>
+          <span class="why__n">03</span>
+        </article>
+        <article class="why__card" data-spot>
+          <svg class="why__ic" viewBox="0 0 48 48"><path d="M24 41S7 31 7 18a9 9 0 0 1 17-4 9 9 0 0 1 17 4c0 13-17 23-17 23Z"/><path d="M13 22h6l3-6 4 12 3-6h6"/></svg>
+          <h3 data-i18n="why.4.t">Supportive culture</h3>
+          <p class="muted" data-i18n="why.4.d">A community that celebrates effort and builds confidence — on court and beyond it.</p>
+          <span class="why__n">04</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COACHES ============ -->
+  <section class="section coaches" id="coaches">
+    <div class="container">
+      <div class="sec-head"><span data-i18n="coach.tag">Coaches</span><span>07//</span></div>
+      <div class="coaches__grid">
+        <aside class="coaches__aside">
+          <h2 class="h2" data-split data-i18n="coach.title">The people behind every point</h2>
+          <p class="muted" data-i18n="coach.text">Hover a name to meet the coach. The number shows years on court.</p>
+        </aside>
+        <div class="coach-stage" aria-hidden="true">
+          <div class="coach-stage__imgs"></div>
+          <div class="coach-stage__cap">
+            <div><b class="coach-stage__name"></b><span class="coach-stage__role"></span></div>
+            <span class="coach-stage__yrs"><b></b><small data-i18n="coach.yrs">yrs on court</small></span>
+          </div>
+          <span class="coach-stage__hint" data-i18n="coach.hint">Scroll the names</span>
+        </div>
+        <ul class="coach-list">
+          <li class="coach" data-img="assets/img/coach-1.jpg"><span class="coach__name">Lucas Moreau</span><sup>18</sup><span class="coach__role" data-i18n="coach.r1">Head coach</span></li>
+          <li class="coach" data-img="assets/img/coach-2.jpg"><span class="coach__name">Andrii Koval</span><sup>14</sup><span class="coach__role" data-i18n="coach.r2">High performance</span></li>
+          <li class="coach" data-img="assets/img/coach-3.jpg"><span class="coach__name">Sofia Bondar</span><sup>11</sup><span class="coach__role" data-i18n="coach.r3">Junior program</span></li>
+          <li class="coach" data-img="assets/img/coach-4.jpg"><span class="coach__name">Ethan Brooks</span><sup>09</sup><span class="coach__role" data-i18n="coach.r4">Serve &amp; fitness</span></li>
+          <li class="coach" data-img="assets/img/coach-5.jpg"><span class="coach__name">Max Hrytsenko</span><sup>07</sup><span class="coach__role" data-i18n="coach.r5">Adult groups</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="coach-float" aria-hidden="true"><div class="coach-float__in"></div></div>
+  </section>
+
+  <!-- ============ FACILITIES ============ -->
+  <section class="fac-sec" id="facilities">
+    <div class="fac-pin">
+    <div class="container">
+      <div class="sec-head"><span data-i18n="fac.tag">Our Facilities</span><span>08//</span></div>
+    </div>
+    <div class="fac">
+      <div class="fac__track">
+        <article class="fac__card"><img src="assets/img/fac-1.jpg" alt="Green hard court from above" draggable="false"><div class="fac__txt"><h3 data-i18n="fac.1.t">Hard Courts</h3><p data-i18n="fac.1.d">Eight ITF-certified acrylic courts with tour-grade LED lighting.</p></div><span class="fac__n">01</span></article>
+        <article class="fac__card"><img src="assets/img/fac-2.jpg" alt="Clay court from above" draggable="false"><div class="fac__txt"><h3 data-i18n="fac.2.t">Clay Courts</h3><p data-i18n="fac.2.d">Four European red-clay courts for patience, slide and spin.</p></div><span class="fac__n">02</span></article>
+        <article class="fac__card"><img src="assets/img/fac-3.jpg" alt="Gym with bikes and machines" draggable="false"><div class="fac__txt"><h3 data-i18n="fac.3.t">Performance Gym</h3><p data-i18n="fac.3.d">Strength, speed and injury prevention built for tennis players.</p></div><span class="fac__n">03</span></article>
+        <article class="fac__card"><img src="assets/img/fac-4.jpg" alt="Athletes training with battle ropes" draggable="false"><div class="fac__txt"><h3 data-i18n="fac.4.t">Athletic Lab</h3><p data-i18n="fac.4.d">Footwork, agility and conditioning sessions on a dedicated turf.</p></div><span class="fac__n">04</span></article>
+        <article class="fac__card"><img src="assets/img/fac-5.jpg" alt="Outdoor tennis court surrounded by trees" draggable="false"><div class="fac__txt"><h3 data-i18n="fac.5.t">Park Courts</h3><p data-i18n="fac.5.d">Two outdoor courts in the trees for summer camps and match days.</p></div><span class="fac__n">05</span></article>
+      </div>
+    </div>
+    <div class="container fac__nav">
+      <span class="fac__count"><b>01</b> / 05</span>
+      <div class="fac__bar"><i></i></div>
+      <span class="fac__hint" data-i18n="fac.hint">Keep scrolling</span>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats glow glow--b">
+    <div class="halftone" aria-hidden="true"></div>
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container stats__in">
+      <div class="stat"><b><span class="count" data-to="12">0</span></b><span data-i18n="stats.1">Years on court</span></div>
+      <div class="stat"><b><span class="count" data-to="1200">0</span>+</b><span data-i18n="stats.2">Active players</span></div>
+      <div class="stat"><b><span class="count" data-to="14">0</span></b><span data-i18n="stats.3">Courts, indoor &amp; out</span></div>
+      <div class="stat"><b><span class="count" data-to="38">0</span></b><span data-i18n="stats.4">National junior titles</span></div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <div class="sec-head"><span data-i18n="rev.tag">Testimonials</span><span>09//</span></div>
+      <div class="reviews">
+        <div class="reviews__left">
+          <h2 class="h2" data-split data-i18n="rev.title">What our players &amp; parents say</h2>
+          <p class="muted" data-i18n="rev.text">Real stories from players who trained, competed and grew with us — straight from the court.</p>
+          <a href="#join" class="btn btn--ink" data-magnetic><span data-i18n="about.cta">Get in Touch</span><i class="btn__ic"><svg><use href="#i-arrow"/></svg></i></a>
+        </div>
+        <div class="reviews__right">
+          <div class="review-card">
+            <div class="review" data-i="0">
+              <h3 data-i18n="rev.1.t">“A game-changing experience that built my confidence”</h3>
+              <p class="muted" data-i18n="rev.1.d">Joining Amortie completely changed my game. The coaches focus on technique, mindset and discipline — I feel more confident in every match I play now.</p>
+              <div class="review__who"><img src="assets/img/t-1.jpg" alt=""><svg class="review__q" viewBox="0 0 32 24"><path d="M0 24V14C0 5 5 1 12 0l1 4C8 5 6 8 6 12h6v12H0Zm19 0V14c0-9 5-13 12-14l1 4c-5 1-7 4-7 8h6v12H19Z"/></svg><div><b>Mia Kovalenko</b><small data-i18n="rev.1.r">Junior player, 16</small></div></div>
+            </div>
+            <div class="review" data-i="1">
+              <h3 data-i18n="rev.2.t">“My son found his game — and his friends”</h3>
+              <p class="muted" data-i18n="rev.2.d">In two seasons he went from mini-tennis to his first regional final. The coaches know exactly when to push and when to make it fun.</p>
+              <div class="review__who"><img src="assets/img/t-2.jpg" alt=""><svg class="review__q" viewBox="0 0 32 24"><path d="M0 24V14C0 5 5 1 12 0l1 4C8 5 6 8 6 12h6v12H0Zm19 0V14c0-9 5-13 12-14l1 4c-5 1-7 4-7 8h6v12H19Z"/></svg><div><b>Daniel Hart</b><small data-i18n="rev.2.r">Parent</small></div></div>
+            </div>
+            <div class="review" data-i="2">
+              <h3 data-i18n="rev.3.t">“I started at 34. Now I win club tournaments”</h3>
+              <p class="muted" data-i18n="rev.3.d">The adult program is structured but never boring. I finally have a backhand I trust — and a drop shot my friends hate.</p>
+              <div class="review__who"><img src="assets/img/t-3.jpg" alt=""><svg class="review__q" viewBox="0 0 32 24"><path d="M0 24V14C0 5 5 1 12 0l1 4C8 5 6 8 6 12h6v12H0Zm19 0V14c0-9 5-13 12-14l1 4c-5 1-7 4-7 8h6v12H19Z"/></svg><div><b>Olena Marchenko</b><small data-i18n="rev.3.r">Adult program</small></div></div>
+            </div>
+            <span class="review-card__count"><b>1</b>/3</span>
+          </div>
+          <div class="arrows arrows--center">
+            <button class="arrow arrow--ink" data-rev="-1" aria-label="Previous"><svg style="transform:scaleX(-1)"><use href="#i-arrow"/></svg></button>
+            <button class="arrow" data-rev="1" aria-label="Next"><svg><use href="#i-arrow"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="sec-head"><span>FAQ</span><span>10//</span></div>
+      <div class="faq">
+        <h2 class="h2" data-split data-i18n="faq.title">Everything you need to know</h2>
+        <div class="faq__list">
+          <details class="qa" open><summary><span data-i18n="faq.1.q">Do you accept complete beginners?</span><i><svg><use href="#i-plus"/></svg></i></summary><div class="qa__a"><p data-i18n="faq.1.a">Absolutely. Around a third of our players start from zero. Beginner groups are small — four players per coach — so everyone gets attention.</p></div></details>
+          <details class="qa"><summary><span data-i18n="faq.2.q">What age groups do you train?</span><i><svg><use href="#i-plus"/></svg></i></summary><div class="qa__a"><p data-i18n="faq.2.a">From 4 years old to adults of any age. Kids, juniors and adults train in separate programs with their own coaches and schedules.</p></div></details>
+          <details class="qa"><summary><span data-i18n="faq.3.q">Do you offer trial sessions?</span><i><svg><use href="#i-plus"/></svg></i></summary><div class="qa__a"><p data-i18n="faq.3.a">Yes — your first 60-minute session is free. It includes a short assessment so we can recommend the right program.</p></div></details>
+          <details class="qa"><summary><span data-i18n="faq.4.q">Do you help with tournaments?</span><i><svg><use href="#i-plus"/></svg></i></summary><div class="qa__a"><p data-i18n="faq.4.a">Our high-performance team plans tournament calendars, travels with players and prepares them for national and ITF junior events.</p></div></details>
+          <details class="qa"><summary><span data-i18n="faq.5.q">How many sessions are held per week?</span><i><svg><use href="#i-plus"/></svg></i></summary><div class="qa__a"><p data-i18n="faq.5.a">Group programs run 2–5 times a week. Private lessons can be booked any day from 7:00 to 22:00.</p></div></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JOIN / CTA ============ -->
+  <section class="section" id="join">
+    <div class="container">
+      <div class="cta">
+        <img src="assets/img/cta.jpg" alt="" class="cta__bg" data-parallax>
+        <div class="cta__shade"></div>
+        <canvas class="cta__balls"></canvas>
+        <div class="cta__in">
+          <h2 class="cta__title" data-split data-i18n="cta.title">Ready to step on court?</h2>
+          <button class="toggle" type="button" aria-pressed="false">
+            <span class="toggle__knob"><svg><use href="#i-ball"/></svg></span>
+            <span class="toggle__no" data-i18n="cta.no">NOT YET</span>
+            <span class="toggle__yes" data-i18n="cta.yes">YES!</span>
+          </button>
+          <p class="cta__text" data-i18n="cta.text">Train with professional coaches, build confidence and unlock your true potential on the court.</p>
+          <form class="cta__form" novalidate>
+            <label for="email" data-i18n="cta.label">Email</label>
+            <div class="cta__row">
+              <input id="email" type="email" required placeholder="you@email.com" autocomplete="email">
+              <button class="btn btn--lime" type="submit"><span data-i18n="cta.submit">Book a Trial</span></button>
+            </div>
+            <p class="cta__msg" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="panel footer__panel">
+      <div class="footer__top">
+        <div>
+          <h2 class="footer__title" data-split data-i18n="foot.title">Doing everything for your next great point</h2>
+          <nav class="footer__nav">
+            <a href="#top" data-i18n="foot.home">Home</a>
+            <a href="#about" data-i18n="nav.about">About</a>
+            <a href="#programs" data-i18n="nav.programs">Programs</a>
+            <a href="#plans" data-i18n="plans.tag">Membership</a>
+            <a href="#coaches" data-i18n="nav.coaches">Coaches</a>
+            <a href="#facilities" data-i18n="nav.facilities">Facilities</a>
+            <a href="#faq" data-i18n="nav.faq">FAQ</a>
+          </nav>
+        </div>
+        <a href="#join" class="explore" data-cursor="view">
+          <img src="assets/img/explore.jpg" alt="">
+          <span data-i18n="foot.explore">Explore Now</span>
+          <i class="round-ic round-ic--lime"><svg><use href="#i-arrow-ur"/></svg></i>
+        </a>
+      </div>
+      <div class="footer__contacts">
+        <a href="tel:+380441234567">+380 44 123 45 67</a>
+        <a href="mailto:hello@amortie.club">hello@amortie.club</a>
+        <span data-i18n="foot.addr">12 Dniprovska St., Kyiv 01001</span>
+      </div>
+      <div class="wordmark" aria-hidden="true">
+        <span>A</span><span>M</span><span class="wordmark__o"><svg><use href="#i-ball"/></svg></span><span>R</span><span>T</span><span>I</span><span>E</span>
+      </div>
+      <div class="footer__bottom">
+        <a href="#" data-i18n="foot.privacy">Privacy Policy</a>
+        <span>© 2026 Amortie.</span>
+        <a href="#" data-i18n="foot.terms">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ COOKIE ============ -->
+<div class="cookie" role="dialog" aria-live="polite" aria-label="Cookies">
+  <div class="cookie__top">
+    <svg class="cookie__ic"><use href="#i-ball"/></svg>
+    <div>
+      <h4 data-i18n="cookie.t">We use cookies</h4>
+      <p data-i18n="cookie.d">Only to keep the site fast and remember your language. No spam, no tracking you across the web. <a href="#">Privacy Policy</a></p>
+    </div>
+  </div>
+  <div class="cookie__btns">
+    <button class="btn btn--lime cookie__ok" type="button" data-cookie="all"><span data-i18n="cookie.ok">Accept all</span></button>
+    <button class="btn cookie__min" type="button" data-cookie="necessary"><span data-i18n="cookie.min">Only necessary</span></button>
+  </div>
+</div>
+
+<!-- ============ CONTACT FAB (mobile) ============ -->
+<div class="fab">
+  <button class="fab__main" type="button" aria-label="Contact us" aria-expanded="false">
+    <svg class="fab__i-open" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h2.1a1 1 0 0 1 1 .76l.8 3.2a1 1 0 0 1-.29.97l-1.5 1.4a12 12 0 0 0 6.06 6.06l1.4-1.5a1 1 0 0 1 .97-.29l3.2.8a1 1 0 0 1 .76 1v2.1A1.5 1.5 0 0 1 18.5 20 14.5 14.5 0 0 1 4 5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+    <svg class="fab__i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="fab__item" href="tel:+380441234567" aria-label="Call"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h2.1a1 1 0 0 1 1 .76l.8 3.2a1 1 0 0 1-.29.97l-1.5 1.4a12 12 0 0 0 6.06 6.06l1.4-1.5a1 1 0 0 1 .97-.29l3.2.8a1 1 0 0 1 .76 1v2.1A1.5 1.5 0 0 1 18.5 20 14.5 14.5 0 0 1 4 5.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></a>
+  <a class="fab__item" href="#" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M21 4 3 11.2l5.6 2 2.1 6.3 3.2-3.9 4.6 3.4L21 4Zm-12.1 9.1 9.3-6.3-7.2 7.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></a>
+  <a class="fab__item" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></svg></a>
+  <a class="fab__item" href="#" aria-label="Viber"><svg viewBox="0 0 24 24"><path d="M12 3c-4.6 0-8 2.6-8 7.4 0 2.7 1 4.6 2.6 5.8V20l3-2.1c.8.2 1.6.3 2.4.3 4.6 0 8-2.6 8-7.6S16.6 3 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.5 8.5c.3 2.4 2.6 4.8 5 5.1M12.3 7.5a3 3 0 0 1 2.8 2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
