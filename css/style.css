@@ -1184,3 +1184,36 @@ body.cookie-open .fab { opacity: 0 !important; visibility: hidden; }
   .coach.is-on .coach__name { transform: translateX(10px); }
   .coach.is-on sup { transform: translateX(10px); }
 }
+
+/* =========================================================
+   SCROLLBAR — court line + thumb, recoloured over dark sections
+   ========================================================= */
+html.has-sbar { scrollbar-width: none; }
+html.has-sbar::-webkit-scrollbar { display: none; }
+.sbar {
+  --sb-track: rgba(15,15,15,.12); --sb-thumb: var(--ink);
+  position: fixed; z-index: 150; top: 10px; bottom: 10px; right: 0;
+  width: 22px; touch-action: none; display: none; cursor: pointer;
+  transition: opacity .5s;
+}
+.has-sbar .sbar { display: block; }
+body.is-loading .sbar { opacity: 0; }
+.sbar::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 2px; margin-left: -1px; border-radius: 2px;
+  background: var(--sb-track);
+  transition: background .5s;
+}
+.sbar__thumb {
+  position: absolute; top: 0; left: 50%;
+  width: 4px; margin-left: -2px; border-radius: 4px;
+  background: var(--sb-thumb);
+  transition: background .5s, width .35s var(--ease), margin .35s var(--ease), box-shadow .5s;
+  will-change: transform;
+}
+.sbar:hover .sbar__thumb, .sbar.is-drag .sbar__thumb { width: 8px; margin-left: -4px; }
+.sbar.is-dark { --sb-track: rgba(255,255,255,.2); --sb-thumb: var(--lime); }
+.sbar.is-dark .sbar__thumb { box-shadow: 0 0 14px rgba(211,253,64,.55); }
+.has-cursor .sbar { cursor: none; }
+html.is-sb-drag, html.is-sb-drag * { user-select: none !important; }
+.sbar__thumb::before { content: ""; position: absolute; inset: -6px -9px; }

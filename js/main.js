@@ -23,8 +23,29 @@
     if (!(k in dict.en)) dict.en[k] = el.innerHTML.trim();
   });
 
-  let lang = 'en';
-  try { lang = localStorage.getItem('amortie-lang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
+  /* language lives in the URL: <base>/en or <base>/ua
+     (en/ and ua/ folders bounce direct visits back here with ?lang=) */
+  const SLUG = { en: 'en', uk: 'ua' };
+  const fromSlug = s => s === 'ua' ? 'uk' : s === 'en' ? 'en' : null;
+  const canRoute = /^https?:$/.test(location.protocol);
+  const route = location.pathname.replace(/index\.html$/, '').match(/^(.*?\/)(?:(en|ua)\/?)?$/);
+  const basePath = route ? route[1] : '/';
+
+  let lang = fromSlug(route && route[2]) || fromSlug(new URLSearchParams(location.search).get('lang'));
+  if (!lang) {
+    lang = 'en';
+    try { lang = localStorage.getItem('amortie-lang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
+  }
+  function syncUrl(push) {
+    if (!canRoute) return;
+    try { history[push ? 'pushState' : 'replaceState']({ lang }, '', basePath + SLUG[lang] + location.hash); } catch (e) {}
+  }
+  syncUrl(false);
+  addEventListener('popstate', e => {
+    const m = location.pathname.match(/\/(en|ua)\/?$/);
+    const next = (e.state && e.state.lang) || fromSlug(m && m[1]);
+    if (next) setLang(next, true);
+  });
 
   const t = key => (dict[lang] && dict[lang][key] !== undefined) ? dict[lang][key] : dict.en[key];
 
@@ -72,10 +93,11 @@
     $$('.lang__btn').forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
   }
 
-  function setLang(next) {
+  function setLang(next, fromHistory) {
     if (next === lang) return;
     lang = next;
     try { localStorage.setItem('amortie-lang', lang); } catch (e) {}
+    if (!fromHistory) syncUrl(true);
     $('.lang').dataset.active = lang;
     $$('.lang__btn').forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
     document.body.classList.add('is-swapping');
@@ -355,6 +377,73 @@
   addEventListener('resize', () => { clearTimeout(buildCourt.t); buildCourt.t = setTimeout(buildCourt, 150); });
 
   /* =======================================================
+     SCROLLBAR — a court line with a thumb that turns lime
+     over dark sections (fine pointers only)
+     ======================================================= */
+  const sbar = $('.sbar'), sbThumb = $('.sbar__thumb');
+  const sbarOn = finePointer;
+  let sbThumbH = 0, sbTrackH = 0, sbThumbY = 0;
+  const maxScroll = () => document.documentElement.scrollHeight - innerHeight;
+  const scrollToY = (v, immediate) => {
+    v = clamp(v, 0, maxScroll());
+    if (lenis) lenis.scrollTo(v, immediate ? { immediate: true } : { duration: 1.2 });
+    else window.scrollTo({ top: v, behavior: immediate ? 'auto' : 'smooth' });
+  };
+  function layoutBar() {
+    if (!sbarOn) return;
+    sbTrackH = sbar.clientHeight;
+    sbThumbH = Math.max(48, sbTrackH * innerHeight / document.documentElement.scrollHeight);
+    sbThumb.style.height = sbThumbH + 'px';
+    renderBar();
+  }
+  function renderBar() {
+    if (!sbarOn) return;
+    const max = maxScroll();
+    const y = (max > 0 ? clamp(scrollY() / max, 0, 1) : 0) * (sbTrackH - sbThumbH);
+    sbThumbY = y;
+    sbThumb.style.transform = `translate3d(0, ${y}px, 0)`;
+    // what is actually behind the thumb decides its colour
+    const cy = sbar.getBoundingClientRect().top + y + sbThumbH / 2;
+    const under = document.elementsFromPoint(innerWidth - 8, cy).find(el => !el.closest('.sbar, .header, .cursor'));
+    sbar.classList.toggle('is-dark', !!(under && under.closest('.hero, .glow, .menu, .loader')));
+  }
+  if (sbarOn) {
+    document.documentElement.classList.add('has-sbar');
+    // grab anywhere on the line: off the thumb it first jumps there, then drags
+    let drag = null;
+    sbar.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      const top = sbar.getBoundingClientRect().top;
+      const ratio = maxScroll() / Math.max(1, sbTrackH - sbThumbH);
+      let start = scrollY();
+      const onThumb = e.clientY >= top + sbThumbY && e.clientY <= top + sbThumbY + sbThumbH;
+      if (!onThumb) {
+        start = clamp((e.clientY - top - sbThumbH / 2) * ratio, 0, maxScroll());
+        scrollToY(start, true);
+      }
+      drag = { y: e.clientY, start, ratio };
+      sbar.setPointerCapture(e.pointerId);
+      sbar.classList.add('is-drag');
+      document.documentElement.classList.add('is-sb-drag');
+    });
+    sbar.addEventListener('pointermove', e => {
+      if (drag) scrollToY(drag.start + (e.clientY - drag.y) * drag.ratio, true);
+    });
+    const endDrag = () => {
+      drag = null;
+      sbar.classList.remove('is-drag');
+      document.documentElement.classList.remove('is-sb-drag');
+    };
+    sbar.addEventListener('pointerup', endDrag);
+    sbar.addEventListener('pointercancel', endDrag);
+    sbar.addEventListener('lostpointercapture', endDrag);
+    addEventListener('resize', layoutBar);
+    ScrollTrigger.addEventListener('refresh', layoutBar);
+    layoutBar();
+  }
+
+  /* =======================================================
      HEADER
      ======================================================= */
   const header = $('.header');
@@ -366,6 +455,7 @@
     if (!document.body.classList.contains('menu-open')) header.classList.toggle('is-hidden', y > lastY && y > 300);
     lastY = y;
     drawCourt();
+    renderBar();
     $('.logo__ball').style.transform = `rotate(${y * .25}deg)`;
   }
   if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, { passive: true });
